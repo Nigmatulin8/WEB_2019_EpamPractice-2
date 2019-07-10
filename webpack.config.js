@@ -3,13 +3,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: { main: './src/index.js' },
+  entry: [ 'babel-polyfill', './src/index.js' ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
     publicPath: '/dist/'
   },
-  watch: true,
+  watch: process.env.NODE_ENV === 'production' ? true : false,
   module: {
     rules: [
       {
