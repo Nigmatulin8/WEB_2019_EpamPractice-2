@@ -30,7 +30,6 @@ export const audioRecord = {
 
 				recordBtn.removeEventListener('mousedown', startRecording);
 				recordBtn.removeEventListener('mouseup', stopRecording);
-				console.log('DISLIKE OTPISKA');
 			});
 		})
 	},

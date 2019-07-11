@@ -1,5 +1,9 @@
+import * as stream from './stream.js';
+
+window.stream = stream;
+
 export default class Router {
-    constructor(routes) {
+    constructor(routes, socket, io) {
         try {
             if (!routes) {
                 throw 'error: routes param is mandatory';
@@ -7,6 +11,9 @@ export default class Router {
 
             this.routes = routes;
             this.rootElem = document.getElementById('app');
+
+            this.io = io;
+            this.socket = socket;
 
             this.init();
         }
@@ -54,6 +61,12 @@ export default class Router {
             return response.text();
         }).then(data => {
             that.rootElem.innerHTML = data;
+
+            console.log(url);
+            if(url == 'views/../views/streaming.html') {
+                console.log(2222);
+                window['stream'].initAudio(this.socket);
+            }
         });
     }
 }

@@ -1,3 +1,13 @@
+/*
+	В коде присутствует огромный костыль, который позволяет работать приложению
+как положенно, если оно открыто в двух вкладках (в одной запись аудио, во второй
+воспроизведение). Идея эта была подсморенна, но проект будет
+доработан без костылей.
+
+Теперь index.html попадает в dist при сборке
+
+*/
+
 import './styles.scss';
 import Router from './comp/Router.js';
 import Route from './comp/Route.js';
@@ -8,13 +18,13 @@ import { audioStream } from './comp/stream.js';
 import { audioList } from './comp/audioList.js';
 
 const socket = io(url.SERVER_URL);
+socket.on('connect', () => console.log('CONNECTED'));
+
 new Router([
 	new Route('microphone', url.MIC_URL, true),
 	new Route('voices', url.VOICE_URL),
 	new Route('streaming', url.STREAM_URL)
-]);
-
-socket.on('connect', () => console.log('CONNECTED'));
+], socket, io);
 
 window.onload = main;
 
@@ -30,9 +40,6 @@ function  main() {
 				case 'microphoneNode' :
 					audioRecord.startRecordingAudio(socket);
 					break;
-				case 'streamNode' :
-					audioStream.streamAudio(socket);
-					break;
 				case 'audioList' :
 					audioList.getAudioList();
 					break
@@ -43,6 +50,3 @@ function  main() {
 	const config = { childList: true };
 	observer.observe(mainApp, config);
 }
-
-	//console.log(fetchInject(['./comp/audioList.js']));
-	//let hash = window.location.hash.substr(1); //voices, microphone, stream
