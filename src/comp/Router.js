@@ -49,15 +49,11 @@ export default class Router {
     goToRoute(htmlName) {
         let url = 'views/' + htmlName;
         const that = this;
-        const xhttp = new XMLHttpRequest();
 
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                that.rootElem.innerHTML = this.responseText;
-            }
-        };
-
-        xhttp.open('GET', url, true);
-        xhttp.send();
+        fetch(url, { method: 'get' }).then(response => {
+            return response.text();
+        }).then(data => {
+            that.rootElem.innerHTML = data;
+        });
     }
 }
